@@ -1,11 +1,6 @@
-# IMU Curl Coach: a self-calibrating bicep curl rep counter (ESP32-C3 + MPU6050)
+# CURL COACH : a self-calibrating bicep curl rep counter (ESP32-C3 + MPU6050)
 
-> Project directory is named `imu_step_counter` for historical reasons. The
-> product pivoted from step counting to bicep curl rep counting mid-build,
-> once testing showed step counting was a poor fit for a single wrist/handheld
-> IMU. See [Innovation & Product Thinking](#innovation--product-thinking-the-pivot)
-> for why, and [Known Limitations](#known-limitations) for the naming leftovers
-> that pivot left behind.
+Count your reps !
 
 ## Evaluation criteria coverage
 
