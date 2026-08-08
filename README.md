@@ -14,6 +14,7 @@
 <p align="center">
   <a href="#demo-video">Demo</a> &bull;
   <a href="#problem-relevance--product-value">Problem</a> &bull;
+  <a href="#how-it-works">How It Works</a> &bull;
   <a href="#bill-of-materials">BOM</a> &bull;
   <a href="#wiring">Wiring</a> &bull;
   <a href="#build--flash-instructions">Build</a> &bull;
@@ -67,6 +68,78 @@ which physical axis your curl motion rotates around, counts reps using
 gyroscope direction reversals, shows live status on an onboard RGB LED, and
 publishes the running rep count to a ThingSpeak dashboard over Wi-Fi/MQTT
 every 15 seconds.
+
+---
+
+## How It Works
+
+### Why gyroscope, not accelerometer
+
+A curl is a **rotation** of the forearm around the elbow, not a translation
+or an impact like a footstep. The gyroscope measures angular velocity
+(degrees/second) directly, so it captures "how fast is the arm rotating
+right now" independent of the device's absolute orientation relative to
+gravity. That independence is what makes this approach reliable across
+mounting angles, unlike the original accelerometer-baseline approach (see
+[Innovation & Product Thinking](#innovation--product-thinking-the-pivot)).
+
+### Phase 1: axis auto-detection ("capture mode")
+
+The MPU6050 reports angular velocity on three axes, but only one of them
+actually corresponds to elbow flexion for however the sensor happens to be
+mounted. Rather than hardcode that axis and force an exact mounting
+orientation, the firmware learns it once:
+
+1. Press BOOT once. The LED goes solid purple and the firmware starts
+   tracking the peak angular velocity seen on each of the X, Y, and Z axes.
+2. Perform one deliberate curl.
+3. Press BOOT again to stop capture. Whichever axis had the highest peak
+   during that motion is saved as the curl axis.
+4. That axis is written to flash (NVS) immediately, so this only has to
+   happen once ever, not on every power-up.
+
+From this point on, every sample reduces to a single number: the angular
+rate on that one saved axis.
+
+### Phase 2: counting reps from that one number
+
+Counting is a small state machine over that single rate value:
+
+```
+direction == 0                      -> idle, waiting for a rep to start
+|rate| crosses the start threshold  -> direction locks, rep armed, timer starts
+direction reverses past the         -> REP COUNTED, enter "waiting_neutral"
+  opposite threshold
+|rate| drops back into the          -> waiting_neutral clears, ready for
+  release band                         the next rep
+```
+
+Tracing one real curl: the arm starts still (`rate` near zero), then rises
+past the start threshold as you curl up (a rep arms), then swings negative
+as you lower the arm back down; once it reverses hard enough the other way,
+one rep is counted, the LED flashes cyan, and the state briefly requires the
+motion to settle back down before it will arm again.
+
+### The four guards against bad data
+
+| Guard | Value | Purpose |
+|---|---|---|
+| Start threshold | 35 degrees/s | Ignore incidental hand motion; only real curl-speed rotation arms a rep |
+| Release band (hysteresis) | 10 degrees/s | Stop a single noisy rep from being counted twice at the reversal point |
+| Refractory period | 500 ms | Reject physically implausible back-to-back triggers |
+| Direction timeout | 3000 ms | Auto-recover from an abandoned or partial rep instead of latching forever |
+
+That last guard matters more than it looks: without it, one interrupted or
+abandoned rep would leave the state machine permanently armed, silently
+refusing to count anything else until a manual recalibration. It was a real
+bug found during review; see
+[Effective Use of FirmGen](#effective-use-of-firmgen) for how it was caught
+and fixed.
+
+Every counted rep updates the LED and the pending count immediately; the
+publish to ThingSpeak is rate-limited to once per 15 seconds separately (see
+[Functionality & Reliability](#functionality--reliability)), so local
+feedback is instant even though the cloud dashboard isn't.
 
 ---
 
