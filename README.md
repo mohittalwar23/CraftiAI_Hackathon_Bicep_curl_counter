@@ -1,6 +1,27 @@
-# CURL COACH : a self-calibrating bicep curl rep counter (ESP32-C3 + MPU6050)
+<h1 align="center">CURL COACH</h1>
+<p align="center"><i>A self-calibrating bicep curl rep counter, built on an ESP32-C3 and an MPU6050.</i></p>
+<p align="center"><b>Count your reps!</b></p>
 
-Count your reps !
+<p align="center">
+  <img src="https://img.shields.io/badge/MCU-ESP32--C3-blue" alt="MCU: ESP32-C3">
+  <img src="https://img.shields.io/badge/Sensor-MPU6050-informational" alt="Sensor: MPU6050">
+  <img src="https://img.shields.io/badge/Framework-ESP--IDF-red" alt="Framework: ESP-IDF">
+  <img src="https://img.shields.io/badge/Protocol-MQTT-orange" alt="Protocol: MQTT">
+  <img src="https://img.shields.io/badge/Cloud-ThingSpeak-9cf" alt="Cloud: ThingSpeak">
+  <img src="https://img.shields.io/badge/Built%20with-FirmGen-brightgreen" alt="Built with FirmGen">
+</p>
+
+<p align="center">
+  <a href="#demo-video">Demo</a> &bull;
+  <a href="#problem-relevance--product-value">Problem</a> &bull;
+  <a href="#bill-of-materials">BOM</a> &bull;
+  <a href="#wiring">Wiring</a> &bull;
+  <a href="#build--flash-instructions">Build</a> &bull;
+  <a href="#effective-use-of-firmgen">FirmGen Workflow</a> &bull;
+  <a href="#known-limitations">Limitations</a>
+</p>
+
+<br>
 
 ---
 
@@ -163,19 +184,32 @@ prompt, plan, topology, deploy, evidence, refine cycle multiple times, with
 real hardware-in-the-loop debugging at each stage. Screenshots and the full
 chat export are included as evidence.
 
+**`docs/screenshots/task_list_step_counter_progress.png`**
+Early task list from the original step-counting implementation, mid-build:
+accel-based threshold detection, Wi-Fi/MQTT/ThingSpeak wiring, and RGB LED
+status all in progress.
+
+<p align="center">
+  <img src="docs/screenshots/task_list_step_counter_progress.png" alt="Step counter task list" width="500">
+</p>
+
 **`docs/screenshots/firmware_topology.png`**
 FirmGen's generated firmware topology graph for this project, showing the
 boot/app_task/Wi-Fi/MQTT/logger module boundaries FirmGen inferred from the
 generated source.
 
-![Firmware topology](docs/screenshots/firmware_topology.png)
+<p align="center">
+  <img src="docs/screenshots/firmware_topology.png" alt="Firmware topology" width="700">
+</p>
 
 **`docs/screenshots/task_list_curl_rename_fix_complete.png`**
 Final task list after the pivot to curl counting: renaming `step_device` to
 `curl_device` throughout, and adding the direction-timeout recovery fix
 found during manual code review (below).
 
-![Curl rename and fix task list](docs/screenshots/task_list_curl_rename_fix_complete.png)
+<p align="center">
+  <img src="docs/screenshots/task_list_curl_rename_fix_complete.png" alt="Curl rename and fix task list" width="500">
+</p>
 
 **Notable iterations in this build** (see the chat export for full detail):
 1. Generated the initial Wi-Fi/MQTT/ThingSpeak plus MPU6050 step-counting
@@ -232,6 +266,8 @@ found during manual code review (below).
   direction-timeout stack around the actual rep-detection state machine so
   noisy sensor data doesn't produce false or stuck counts.
 
+---
+
 ## Innovation & Product Thinking (the pivot)
 
 The most important decision in this build was not a line of code. It was
@@ -248,6 +284,8 @@ dramatically more reliable on the exact same hardware. Recognizing when to
 change the product, not just the code, is the product-thinking case this
 section is evidence for.
 
+---
+
 ## Scalability & Robustness
 
 - Reconnect logic (Wi-Fi and MQTT) means the device recovers from a dropped
@@ -261,6 +299,8 @@ section is evidence for.
   backed), so a battery change or crash does not require re-onboarding.
 - MPU6050 initialization failure is treated as a real, handled condition
   (distinct LED pattern, safe parked state) rather than an unhandled crash.
+
+---
 
 ## Known Limitations
 
@@ -277,4 +317,8 @@ section is evidence for.
   threshold state machine, not a trained model, by deliberate design
   choice (see the pivot rationale above: the simpler approach is also the
   more reliable one for this specific motion).
+
+---
+
+<p align="center"><sub>Built for the CraftiAI FirmGen Hackathon.</sub></p>
 
