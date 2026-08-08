@@ -2,29 +2,14 @@
 
 Count your reps !
 
-## Evaluation criteria coverage
-
-| Criterion | Max | Where it's covered in this README |
-|---|---|---|
-| Problem Relevance & Product Value | 20 | [Problem Relevance & Product Value](#problem-relevance--product-value) |
-| Functionality & Reliability | 25 | [Functionality & Reliability](#functionality--reliability), LED status table in [Build & Flash Instructions](#build--flash-instructions) |
-| Effective Use of FirmGen | 20 | [Effective Use of FirmGen](#effective-use-of-firmgen) |
-| Technical Quality & Engineering | 15 | [Technical Quality & Engineering](#technical-quality--engineering) |
-| Innovation & Product Thinking | 10 | [Innovation & Product Thinking](#innovation--product-thinking-the-pivot) |
-| Scalability & Robustness | 5 | [Scalability & Robustness](#scalability--robustness) |
-| Demonstration & Documentation | 5 | [Demo Video](#demo-video), [Wiring](#wiring), [Bill of Materials](#bill-of-materials), [Known Limitations](#known-limitations) |
-
 ---
 
 ## Demo video
 
-`docs/demo/demo.mp4`: to be added. (Placeholder committed at this path; drop
-the recorded demo file there under that exact name and it will play inline
-from this README on any renderer that supports local video embeds.)
-
-<video src="docs/demo/demo.mp4" controls width="480">
-  Demo video not yet added. See docs/demo/demo.mp4.
-</video>
+[**Watch the demo video**](docs/demo/demo.mp4) (`docs/demo/demo.mp4`, about
+63 MB). GitHub does not render an inline video player from a raw HTML
+`<video>` tag inside a README, so click through to the file itself. GitHub's
+own file viewer plays `.mp4` files natively with full playback controls.
 
 ## Chat history
 
@@ -174,12 +159,6 @@ This project was not written in one shot. It went through the full FirmGen
 prompt, plan, topology, deploy, evidence, refine cycle multiple times, with
 real hardware-in-the-loop debugging at each stage. Screenshots and the full
 chat export are included as evidence.
-
-**`docs/screenshots/task_list_step_counter_progress.png`**
-Early task list from the original step-counting implementation (accel-based
-threshold detection, Wi-Fi/MQTT/ThingSpeak wiring, RGB LED status).
-
-![Step counter task list](docs/screenshots/task_list_step_counter_progress.png)
 
 **`docs/screenshots/firmware_topology.png`**
 FirmGen's generated firmware topology graph for this project, showing the
