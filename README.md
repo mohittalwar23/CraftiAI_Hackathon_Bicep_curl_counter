@@ -267,9 +267,6 @@ section is evidence for.
   mount.
 - Single-arm, single-exercise: this counts one motion pattern (curls) on
   whichever arm the sensor is worn on. No exercise classification.
-- `app.c`'s log lines still read "step device," a naming leftover from the
-  pivot that wasn't part of the rename pass. Cosmetic only, does not affect
-  behavior; flagged here rather than left for a reviewer to find.
 - ThingSpeak's free-tier 15-second publish rate limit means the cloud
   dashboard is not real-time rep-by-rep. Local LED feedback is instant; the
   published count catches up on the next allowed interval.
@@ -277,6 +274,4 @@ section is evidence for.
   threshold state machine, not a trained model, by deliberate design
   choice (see the pivot rationale above: the simpler approach is also the
   more reliable one for this specific motion).
-- I2C read failures during sampling are currently swallowed silently
-  rather than logged or counted. Would make a genuinely flaky bus harder
-  to diagnose, though not observed in testing.
+
