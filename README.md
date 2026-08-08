@@ -6,10 +6,13 @@ Count your reps !
 
 ## Demo video
 
-[**Watch the demo video**](docs/demo/demo.mp4) (`docs/demo/demo.mp4`, about
-63 MB). GitHub does not render an inline video player from a raw HTML
-`<video>` tag inside a README, so click through to the file itself. GitHub's
-own file viewer plays `.mp4` files natively with full playback controls.
+<p align="center">
+  <a href="https://youtu.be/PwlLfjI1D7U">
+    <img src="https://img.youtube.com/vi/PwlLfjI1D7U/maxresdefault.jpg" width="600">
+  </a>
+</p>
+
+<p align="center"><a href="https://youtu.be/PwlLfjI1D7U">Watch on YouTube</a></p>
 
 ## Chat history
 
